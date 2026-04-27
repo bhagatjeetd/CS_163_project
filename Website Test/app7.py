@@ -10,6 +10,7 @@ import dash
 df = pd.read_csv('https://raw.githubusercontent.com/bhagatjeetd/CS_163_project/refs/heads/main/fao.csv')
 
 app = Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.LITERA])
+server = app.server
 
 # load_figure_template('DARKLY')
 
@@ -54,4 +55,4 @@ app.layout = html.Div([
 
 # Run the app
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
