@@ -1,4 +1,5 @@
 import dash
+from dash import Dash, html, dash_table, dcc, callback, Output, Input
 from dash import html, dcc
 import plotly.express as px
 import pandas as pd
@@ -14,14 +15,19 @@ CARD_STYLE = {
     "marginBottom": "20px"
 }
 
+fao = pd.read_csv('https://raw.githubusercontent.com/bhagatjeetd/CS_163_project/refs/heads/main/fao.csv')
+hpai = pd.read_csv('https://raw.githubusercontent.com/bhagatjeetd/CS_163_project/refs/heads/main/hpai.csv')
+
 layout = html.Div([
     html.Div([
         html.H3("Dataset Preview"),
         html.P("FAO Dataset"),
-        html.Img(src="/assets/fao_preview_original.png", style={"wdith": "100%"}),
+        dash_table.DataTable(data=fao.to_dict('records'), page_size=6),
+        #html.Img(src="/assets/fao_preview_original.png", style={"wdith": "100%"}),
         html.P(),
         html.P("Birds Affected"),
-        html.Img(src="/assets/hpai_preview_original.png", style={"wdith": "50%"}),],
+        dash_table.DataTable(data=hpai.to_dict('records'), page_size=6)],
+        #html.Img(src="/assets/hpai_preview_original.png", style={"wdith": "50%"}),],
         style=CARD_STYLE),
     html.Div([
         html.H3("Price Statistics"),
