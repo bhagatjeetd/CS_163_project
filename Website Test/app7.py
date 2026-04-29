@@ -7,7 +7,8 @@ import dash
 
 # Incorporate data
 #df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder2007.csv')
-df = pd.read_csv('https://raw.githubusercontent.com/bhagatjeetd/CS_163_project/refs/heads/main/fao.csv')
+fao = pd.read_csv('https://raw.githubusercontent.com/bhagatjeetd/CS_163_project/refs/heads/main/fao.csv')
+hpai = pd.read_csv('https://raw.githubusercontent.com/bhagatjeetd/CS_163_project/refs/heads/main/hpai.csv')
 
 app = Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.LITERA])
 
