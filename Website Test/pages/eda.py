@@ -16,16 +16,31 @@ CARD_STYLE = {
 
 layout = html.Div([
     html.Div([
-        html.H3("Dataset Summary"),
+        html.H3("Dataset Preview"),
         html.P("FAO Dataset"),
-        html.P("Birds Affected")],
+        html.Img(src="/assets/fao_preview_original.png", style={"wdith": "100%"}),
+        html.P(),
+        html.P("Birds Affected"),
+        html.Img(src="/assets/hpai_preview_original.png", style={"wdith": "50%"}),],
         style=CARD_STYLE),
     html.Div([
-        html.Div('Overall Price Summary',
-                 style={'flex': '1', 'paddingRight': '10px'}
-                 ),
-                 
-    ])
+        html.H3("Price Statistics"),
+        html.Div([
+            html.Div([
+                html.Img(src="/assets/product_price_stats.png", style={"wdith": "100%"}),
+                html.P("Individual Products")
+            ], style={"width": "48%"}),
+            html.Div([
+                html.Img(src="/assets/food_group_stats.png", style={"wdith": "100%"}),
+                html.P("Food Group")
+            ], style={"width": "48%"})
+        ],
+        style={
+            "display": "flex",
+            "justifyContent": "space-between",
+            "gap": "4%"
+        })
+    ], style=CARD_STYLE)
     ],
     style={"padding": "20px", "backgroundColor": "#f4f6f9"}
 )
