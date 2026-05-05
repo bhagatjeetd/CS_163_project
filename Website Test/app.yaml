@@ -1,0 +1,9 @@
+runtime: python310
+
+entrypoint: gunicorn -b :$PORT app7:server
+
+env_variables:
+  BUCKET_NAME: "essential-wares-489018-r0.appspot.com"
+  FAO_BLOB: "fao.csv"
+  HPAI_BLOB: "hpai.csv"
+  INFER_URL: "https://infser-90695129128.us-west2.run.app/predict_food_group"
