@@ -170,6 +170,64 @@ layout = html.Div(
         ]),
 
         html.Div(style=CARD_STYLE, children=[
+            html.H3("5) Using Machine Learning for HPAI"),
+            html.Br(),
+            html.H4("5.1) Selecting the Model"),
+            html.P(
+                "For our analysis, we want to make a numerical prediction; therefore, we needed to select "
+                "a regression model. Since we want our features to influence the regression in a way similar "
+                "to an if-else statement, we proceeded with a DecisionTreeRegressor. However, a decision tree can be"
+                "unstable and overfit, so we decided to use a RandomForestRegressor. A random forest uses the averages"
+                "averages of many trees and has better generalization."
+            ),
+            html.H4("5.2) Data Cleaning"),
+            html.P(
+                "Due to differences in dates, we cumulated affected birds count by dates "
+                "set by the FAO dataset. For example, the first instance of egg prices is on 10-20-2022 "
+                ", but there are about 10 records of bird affected. We sum those 10 records and set that as the "
+                "number of birds affected for 10-20-2022."       
+            ),
+            html.H4("5.3) Lag Features"),
+            html.P(
+                "In the real world, prices do not change the moment an event happens. There is also some "
+                "form of time delay. Five lag features we created to help with our model are:"       
+            ),
+            html.Ul([
+                html.Li("Affected Birds Lag"),
+                html.Li("Price Lag"),
+                html.Li("Price Differnce Lag"),
+                html.Li("Severity Lag"),
+                html.Li("Severity Lag 2")
+            ]),
+            html.P(
+                "Affected Birds Lag is similar to Severity Lag in the way that it uses the previous record's "
+                "information as a factor in the next record. Price Lag and Price Difference Lag uses price "
+                "instead of affected birds to predict prices, which is common in economics. "
+                "Lastly, Severity Lag 2 is a lag feature that goes up 2 rows; this is useful for demonstrating "
+                "long-term event shock." 
+            ),
+            html.H4("5.4) Model Performance"),
+            html.P(
+                "For our model we use the following parameters for both chicken and eggs:"
+            ),
+            html.Ul([
+                html.Li("n_estimators = 200"),
+                html.Li("max_depth = 10"),
+                html.Li("min_samples_leaf = 3")
+            ]),
+            html.P(
+                "Using a tolerance of $0.05, we counted the prediction as correct as long as the prediction "
+                "is within a 5 cent range of the actual price."
+            ),
+            html.P(
+                "The model for chicken scored an accuracy of 0.963."
+            ),
+            html.P(
+                "The model for egg scored an accuracy of 0.778."
+            )
+        ]),
+
+        html.Div(style=CARD_STYLE, children=[
             html.H3("References"),
             html.Ul([
                 html.Li("FAO Daily Food Prices Monitor dataset"),

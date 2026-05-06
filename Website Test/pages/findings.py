@@ -303,5 +303,49 @@ layout = html.Div(
                 "Dotted lines show projected trends by food group."
             )
         ]),
+
+        html.Div(style=CARD_STYLE, children=[
+            html.H3("HPAI Model Findings"),
+            html.H4("Feature Importance"),
+            html.Div([
+                html.Div([
+                    html.Img(src="/assets/chicken_feature_importance.png", style={"width": "40%"}),
+                    html.P("Feature importance for chicken")
+                ]),
+                html.Div([
+                    html.Img(src="/assets/egg_feature_importance.png", style={"width": "40%"}),
+                    html.P("Feature importance for eggs")
+                ]),
+            ],
+            style={
+            "display": "flex",
+            "justifyContent": "center",
+            "gap": "5px",
+            "alignItems": "center"
+            }),
+            html.P("Price Lag is the clear favorite for our model when predicting prices."),
+            html.P(
+                "Chicken prices are affected by Severity Lag more than Severity Lag 2, suggests that chicken "
+                "prices experience changes quickly based on sevrity. On the otherhand, eggs are affected by "
+                "Severity Lag 2 more, which suggests it takes a longer time for egg prices to change "
+                "accordingly to the event severity."
+            ),
+
+            html.H4("Potential Price Change"),
+            html.Img(src="/assets/chicken_severity_prediction.png", style={"width": "40%"}),
+            html.P(
+                "The graphs represent the potential change in chicken prices in the future based on "
+                "event severity. Both Medium and High severity show reasonable changes; however, Very Low and "
+                "Low severity show no or downard changes. What we can infer from those two is that unless the "
+                "bird flu severity is high enough, it is not a major factor for predicting chicken prices."
+            ),
+            html.Img(src="/assets/egg_severity_prediction.png", style={"width": "40%"}),
+            html.P(
+                "For predicting changes in egg prices, Very Low and Medium severity show the most interesting results. "
+                "The large increase in Low Severity suggests that when HPAI influence is low, prices are largely influenced "
+                "by another factor. As for Medium severity, the forecast line shows an increase greater than the interval range "
+                "to account for an outlier representing a substantial increase in price."
+            )
+        ])
     ]
 )

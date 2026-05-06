@@ -49,18 +49,19 @@ layout = html.Div([
         html.H3("Distributions"),
         html.Div([
             html.Div([
-                html.Img(src="/assets/food_group_price_distribution.png", style={"wdith": "100%"}),
+                html.Img(src="/assets/food_group_price_distribution.png", style={"width": "100%"}),
                 html.P("Boxplot of price distribution by food group"),
             ], style={"width": "48%"}),
             html.Div([
-                html.Img(src="/assets/overall_price_distribution.png", style={"wdith": "100%"}),
+                html.Img(src="/assets/overall_price_distribution.png", style={"width": "100%"}),
                 html.P("Histogram of overall price distribution"),
             ], style={"width": "48%"})
         ],
         style={
             "display": "flex",
-            "justifyContent": "space-between",
-            "gap": "4%"
+            "justifyContent": "center",
+            "gap": "15px",
+            "alignItems": "center"
         })
     ], style=CARD_STYLE),
     html.Div([
