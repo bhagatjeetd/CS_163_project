@@ -82,13 +82,13 @@ This project follows the pipeline below, from raw data → analysis → web publ
    * Load FAO price data and USDA's bird affected data. 
 2. **Preprocessing + feature creation (notebooks)**
 
-   * Convert dates, clean missing/inconsistent values, group products into food groups, compute monthly averages, and build derived features for analysis (percent changes, correlations, seasonal profiles) in `CS_163_Data_Preprocessing (3).ipyhnb`.
-3. **Analysis + visualization (notebooks)**
+   * Convert dates, clean missing/inconsistent values, group products into food groups, compute monthly averages, and build derived features for analysis (percent changes, correlations, seasonal profiles) in `CS_163_Data_Preprocessing (3).ipynb`.
+3. **Analysis + visualization (`CS_163_Data_Preprocessing (3).ipynb`)**
 
    * Time-dependent event alignment (egg prices vs birds affected), correlation structure among products, seasonality vs shocks, and baseline forecasting comparisons.
 4. **Machine Learning Model**
 
-   * In `Affected_Birds_Analysis.ipynb`, train two RandomForestRegressor models on a joined dataset between birds affected and chicken and another for eggs.Using results from the models, conduct additional analyses related to model predictions.
+   * In `Affected_Birds_Analysis.ipynb`, train two RandomForestRegressor models on a joined dataset between birds affected and chicken and another for eggs. Using results from the models, conduct additional analyses related to model predictions.
 5. **Website publication (App Engine)**
 
    * Dash website displays interactive plots and short explanations for Objective, Analytical Methods, and Major Findings (rubric requirement). 
