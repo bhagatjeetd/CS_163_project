@@ -1,17 +1,15 @@
 # CS 163 Project: Food Price Inflation Analysis
 
 ## 1) What is this repo?
-
-This repository implements an end-to-end pipeline to analyze U.S. grocery price behavior over time and connect price movement to real-world events (for example, bird flu), then publish results on a cloud-hosted website and provide a cloud inference endpoint for forecasting. The project uses FAO grocery price data (Feb 2020 to Feb 2026) and an HPAI/birds-affected dataset to support severity-based event analysis and forecasting by food group. 
+This repository contains all the files related to our project concerning U.S. grocery prices. The project uses FAO grocery price data (Feb 2020 to Feb 2026) and an HPAI/birds-affected dataset to support severity-based event analysis and forecasting by food group. The results and an interactive inference model is published on a cloud-hosted website provided by Google Cloud. 
 
 ## 2) Repository structure
-
 Top-level directories/files:
 
 * `CS_163_Data_Preprocessing (3).ipynb`
   Data cleaning and EDA on FAO prices (monthly aggregation, food group analysis, correlation, forecasting backtests).
 * `Affected_Birds_Analysis.ipynb`
-  Event-focused analysis linking birds-affected activity to egg prices using time-dependent visualizations and lag analyses.
+  Event-focused analysis linking birds-affected activity to egg and chicken prices using time-dependent visualizations and lag analyses.
 * `Website Test/`
   Dash website deployed on Google App Engine with pages for landing/objective, analytical methods, major findings, and an inference UI.
 * `website/cs163-main/intro-to-docker/demo/`
@@ -19,8 +17,9 @@ Top-level directories/files:
 
 Data files:
 
-* `fao.csv` (FAO price data used in notebooks and website)
-* `hpai.csv` and/or `Affected_Birds.csv` (event proxy used for bird-flu analysis)
+* `fao.csv` - FAO price data used in notebooks and website
+* `Affected_Birds.csv` - affected birds data by the USDA
+* `hpai.csv` (clean version of Affected_Birds.csv)
 * `producer-prices_usa (1).csv` (supplemental dataset)
 
 ## 3) Setup instructions (local development)
@@ -78,19 +77,22 @@ Then open:
 
 This project follows the pipeline below, from raw data → analysis → web publication → inference:
 
-1. **Data ingestion**
+1. **Data loading**
 
-   * Load FAO price data and event datasets (HPAI/birds affected). 
+   * Load FAO price data and USDA's bird affected data. 
 2. **Preprocessing + feature creation (notebooks)**
 
-   * Convert dates, clean missing/inconsistent values, group products into food groups, compute monthly averages, and build derived features for analysis (percent changes, correlations, seasonal profiles).
+   * Convert dates, clean missing/inconsistent values, group products into food groups, compute monthly averages, and build derived features for analysis (percent changes, correlations, seasonal profiles) in `CS_163_Data_Preprocessing (3).ipyhnb`.
 3. **Analysis + visualization (notebooks)**
 
    * Time-dependent event alignment (egg prices vs birds affected), correlation structure among products, seasonality vs shocks, and baseline forecasting comparisons.
-4. **Website publication (App Engine)**
+4. **Machine Learning Model**
+
+   * In `Affected_Birds_Analysis.ipynb`, train two RandomForestRegressor models on a joined dataset between birds affected and chicken and another for eggs.Using results from the models, conduct additional analyses related to model predictions.
+5. **Website publication (App Engine)**
 
    * Dash website displays interactive plots and short explanations for Objective, Analytical Methods, and Major Findings (rubric requirement). 
-5. **Inference service (Cloud Run)**
+6. **Inference service (Cloud Run)**
 
    * A Dockerized FastAPI service provides a `/predict_food_group` endpoint for forecasting, and the website calls this endpoint (rubric requirement). 
 
@@ -166,78 +168,14 @@ Forecast endpoint:
 }
 ```
 
-## 7) Website deployment (Google App Engine)
+## 7) Data store in Cloud
+The dataset we have stored in the Cloud are:
+ * `hpai.csv` - the clean version of the birds affected dataset used to show correlation between egg prices and birds affected in our Analytical Methods and Major Findings page
+ * `fao.csv` - updated version of the FAO data, also used in visualizations shown in our Analytical Methods and Major Findings page
 
-### Location of website code
+These datasets are stored in our project buckets and are used by our website through 
+  * fao = read_csv_from_gcs(os.environ.get("FAO_BLOB", "fao.csv"))
+  * hpai = read_csv_from_gcs(os.environ.get("HPAI_BLOB", "hpai.csv"))
 
-* `Website Test/`
-
-### Deploy
-
-From:
-
-```bash
-cd "Website Test"
-gcloud config set project essential-wares-489018-r0
-gcloud app deploy
-gcloud app browse
-```
-
-### Website link
-* App Engine site: https://essential-wares-489018-r0.uw.r.appspot.com
-
-## 8) Cloud deployment commands (reproducible)
-
-### A) Build + deploy Cloud Run inference service
-
-From:
-
-```bash
-cd "website/cs163-main/intro-to-docker/demo"
-```
-
-Train:
-
-```bash
-python app/model/train.py
-```
-
-Build and push:
-
-```bash
-gcloud builds submit --region=us-west2 \
-  --tag us-west2-docker.pkg.dev/essential-wares-489018-r0/myinf/infser:tag3 .
-```
-
-Deploy:
-
-```bash
-gcloud run deploy infser \
-  --image us-west2-docker.pkg.dev/essential-wares-489018-r0/myinf/infser:tag3 \
-  --region us-west2 \
-  --allow-unauthenticated \
-  --port 8080
-```
-
-### B) Upload datasets to GCS (if using GCS-backed loading)
-
-```bash
-gsutil cp ../fao.csv gs://essential-wares-489018-r0.appspot.com/fao.csv
-gsutil cp ../hpai.csv gs://essential-wares-489018-r0.appspot.com/hpai.csv
-```
-
-## 9) Project objective and questions (from proposal)
-
-Objective: analyze grocery prices and past events to understand how events influence food prices and predict how prices may change while accounting for event severity. 
-
-Project questions include:
-
-* greatest overall increase by food group
-* average price forecast three years into the future
-* percent price change intervals by severity
-* speed/duration of event effects
-* seasonality vs shock concentration
-* short-term vs long-term category sensitivity 
-
-
-If you paste your **App Engine website URL**, I can replace the `REPLACE_ME` line so the README is fully final.
+## 8) Website Link
+https://essential-wares-489018-r0.uw.r.appspot.com
